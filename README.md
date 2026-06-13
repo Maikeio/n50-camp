@@ -1,9 +1,9 @@
 # tent-viewer
 
-Renders every face of `tents.stl` as a `<div>` placed with **CSS 3D transforms**
-(no WebGL, no JS 3D math). Built with **[Astro](https://astro.build)**: the tent
-markup is **static HTML at build time** and the site ships **zero JavaScript** —
-the hero, the camera fly-in and the reveals are all pure CSS.
+Renders five camping tents — every face a `<div>` placed with **CSS 3D
+transforms** (no WebGL, no JS 3D math). Built with **[Astro](https://astro.build)**:
+the tent markup is **static HTML at build time** and the site ships **zero
+JavaScript** — the hero, the camera fly-in and the reveals are all pure CSS.
 
 ## Run
 
@@ -16,20 +16,13 @@ static site to `dist/`; `npm run check` runs the strict TypeScript check.
 
 ## How it works
 
-- **`scripts/generate.ts`** — a standalone generator, run **rarely** with
-  `npm run generate`. It parses `tents.stl` and writes one big structured
-  component, **`src/generated/Tents.tsx`**, with every tent's markup fully
-  expanded and positioned (faces + chevron caps, all transforms baked in).
-  It is **not** part of `astro build`; the committed `.tsx` is what the site uses.
+- **`src/components/Tents.tsx`** — the five tents as one big structured
+  component: every face and chevron cap with its transforms baked in. It was
+  originally derived from a `tents.stl` model but is now the **source of truth,
+  edited by hand** (the build-time generator has been removed).
 - **`src/pages/index.astro`** — the page: the sticky 3D stage (scene → camera →
   `<Tents />` + the `N50CAMP` wordmark) and the article that scrolls in beneath it.
 - **`src/styles/global.css`** — all the styling and motion (see below). No script.
-
-Regenerate only when the STL changes:
-
-```sh
-npm run generate
-```
 
 ### Geometry
 
@@ -42,12 +35,12 @@ Each tent is an extrusion of a profile along STL-x, composed via nested
   of real thickness meeting at a ridge, **open underneath**. Each cap is a single
   **SVG `<polygon>`** (white fill + black stroke) drawing that concave outline in
   one crisp raster, 3D-transformed like the faces — so the interior stays open
-  like the STL and the bordered edge stays sharp (no `clip-path` compositing).
+  and the bordered edge stays sharp (no `clip-path` compositing).
   Both caps share one parent carrying the core `rotateY(90deg)`.
 
-Geometry is laid out **×4 supersampled** (`SS` in the generator) for crisp
+The coordinates in `Tents.tsx` are laid out **×4 larger** for crisp
 rasterisation and scaled back down by a matching `scale3d(1/--k)` in the camera
-(`--k` in `global.css` — keep the two in sync).
+(`--k` in `global.css` — it must match the layout scale baked into the markup).
 
 ### Motion (CSS only)
 
@@ -72,5 +65,5 @@ header-state scene with the article below.
 ## Strict TypeScript
 
 `tsconfig.json` extends `astro/tsconfigs/strict` with `noUnusedLocals` /
-`noUnusedParameters` / `noImplicitOverride`. The generator (`scripts/`), the
-generated component, and the page all type-check via `npm run check`.
+`noUnusedParameters` / `noImplicitOverride`. The tents component and the page
+all type-check via `npm run check`.

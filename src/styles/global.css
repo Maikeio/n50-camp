@@ -37,7 +37,7 @@ body {
 @property --bend { syntax: "<number>"; inherits: true; initial-value: 0; }
 
 :root {
-  --k: 4; /* supersample factor — KEEP IN SYNC with SS in scripts/generate.ts */
+  --k: 4; /* supersample factor — must match the ×k coordinate scale baked into src/components/Tents.tsx */
   --ik: calc(1 / var(--k)); /* its inverse, for the camera's supersample undo */
   --edge: 1.4; /* tent edge thickness (px before the ×k supersample) */
 }

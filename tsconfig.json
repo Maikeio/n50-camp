@@ -3,13 +3,11 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
-    "types": ["node"],
-    "resolveJsonModule": true,
     "strict": true,
     "noImplicitOverride": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["src", "scripts", "astro.config.mjs", "*.d.ts"],
+  "include": ["src", "astro.config.mjs", "*.d.ts"],
   "exclude": ["dist"]
 }
