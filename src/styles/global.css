@@ -16,6 +16,9 @@ html {
 }
 body {
   margin: 0;
+  animation: intro linear both;
+  animation-timeline: scroll(root block);
+  animation-range: 0 72vh;
 }
 
 /* ---------------------------------------------------------------------------
@@ -33,6 +36,7 @@ body {
 @property --panX { syntax: "<length>"; inherits: true; initial-value: 0px; }
 @property --panY { syntax: "<length>"; inherits: true; initial-value: 0px; }
 @property --fov  { syntax: "<length>"; inherits: true; initial-value: 900px; }
+@property --camera-top { syntax: "<length-percentage>"; inherits: true; initial-value: 10vh; }
 /* 1 = tents bent into a quarter-circle arc (hero); 0 = straight line (header) */
 @property --bend { syntax: "<number>"; inherits: true; initial-value: 0; }
 
@@ -42,46 +46,24 @@ body {
   --edge: 1.4; /* tent edge thickness (px before the ×k supersample) */
 }
 
-/* ---------------------------------------------------------------------------
-   The sticky stage: hero → header
-   --------------------------------------------------------------------------- */
-/* Fixed (out of flow) so collapsing its height can't change the document height
-   — which would feed back into the scroll position that drives the animation.
-   The hero space is reserved with padding-top on #content instead. */
-#stage {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh; /* hero; the intro collapses this to a header band */
-  overflow: hidden;
-  background: #000;
-  z-index: 2;
-  animation: intro linear both;
-  animation-timeline: scroll(root block);
-  /* fly-in finishes as the first content line reaches just below the band:
-     100vh (hero) − 28vh (band) = 72vh of scroll */
-  animation-range: 0 72vh;
-}
-
 @keyframes intro {
   from {
     /* hero: a 3/4 view looking down onto the row, room at the bottom for the
        wordmark lying on the floor */
-    height: 100vh;
-    --rotX: 46deg;
+    --camera-top: 50vh;
+    --rotX: 40deg;
     --rotY: 0deg;
-    --rotZ: 90deg;
+    --rotZ: 110deg;
     --p: 0; /* hero end of the adaptive zoom blend (see #camera) */
     --dist: 20px;
     --panX: 0px;
     --panY: -120px;
-    --fov: 620px;
+    --fov: 1500px;
     --bend: 1;
   }
   to {
     /* header: side-on row, raised within the band so the caption fits below */
-    height: 28vh;
+    --camera-top: 10vh;
     --rotX: 90deg;
     --rotY: 0deg;
     --rotZ: 90deg;
@@ -122,7 +104,14 @@ body {
        arc centre (full centre would be ~1750); scaled up so it reads big in the
        hero. scale() sits before the centring translate so it grows about its
        own centre. It eases back to 1 as it stands up into the dock caption. */
-    transform: translate3d(880px, 0px, -120px) rotateZ(-90deg) rotateX(0deg) scale(1.9) translate(-50%, -50%);
+    transform: translate3d(880px, 0px, -120px) rotateZ(-110deg) rotateX(0deg) scale(1.9) translate(-50%, -50%);
+  }
+    30% {
+    /* lying flat on the floor (rotateX 0), about halfway from the tents to the
+       arc centre (full centre would be ~1750); scaled up so it reads big in the
+       hero. scale() sits before the centring translate so it grows about its
+       own centre. It eases back to 1 as it stands up into the dock caption. */
+    transform: translate3d(700px, 0px, -150px) rotateZ(-90deg) rotateX(0deg) scale(1.9) translate(-50%, -50%);
   }
   to {
     /* standing upright below the tents, facing the camera (rotateX -90) */
@@ -132,7 +121,7 @@ body {
 
 /* "scroll" hint, fades out as soon as you start */
 #hint {
-  position: absolute;
+  position: fixed;
   bottom: 5vh;
   left: 0;
   right: 0;
@@ -154,16 +143,11 @@ body {
 /* ---------------------------------------------------------------------------
    The 3D scene (unchanged technique; camera now driven by the intro animation)
    --------------------------------------------------------------------------- */
-#scene {
-  position: absolute;
-  inset: 0;
-  perspective: var(--fov);
-}
-
 #camera {
-  position: absolute;
+  position: fixed;
   left: 50%;
-  top: 50%;
+  top: var(--camera-top);
+  z-index: 2;
   /* Viewport-adaptive scene scale for the two end states. Defined HERE (a
      static declaration), not inside the scroll @keyframes, so it re-resolves
      live on window resize — Chromium caches vw/vh that appear *inside* an
@@ -176,6 +160,7 @@ body {
   --fit-dock: min(0.6, tan(atan2(100vw, 829px)));
   transform-style: preserve-3d;
   transform:
+    perspective(var(--fov))
     translate(var(--panX), var(--panY))
     translateZ(var(--dist))
     /* zoom = lerp(hero, dock, --p); --p is the only animated part, so resizing
@@ -188,7 +173,50 @@ body {
     scale3d(var(--ik), var(--ik), var(--ik));
 }
 
-.tent-position,
+.tent-position {
+  --arc-radius: 1750px;
+  --row-x: -12.74px;
+  --z: -47px;
+  position: absolute;
+  transform-style: preserve-3d;
+  transform:
+    translate3d(
+      calc(
+        var(--row-x) * (1 - var(--bend)) +
+        (var(--arc-radius) - var(--arc-radius) * cos(var(--angle))) * var(--bend)
+      ),
+      calc(
+        var(--row-y) * (1 - var(--bend)) -
+        var(--arc-radius) * sin(var(--angle)) * var(--bend)
+      ),
+      var(--z)
+    )
+    rotateZ(calc(var(--angle) * var(--bend)));
+}
+
+.hero-only .face,
+.hero-only .cap polygon {
+  animation: hero-only-color linear both;
+  animation-timeline: scroll(root block);
+  animation-range: 0 72vh;
+}
+
+@keyframes hero-only-color {
+  60% {
+    background-color: #000;
+    fill: #000;
+  }
+  to {
+    background-color: #000;
+    fill: #000;
+  }
+}
+
+.tent-position--center {
+  --row-x: 0px;
+  --z: -45px;
+}
+
 .tent {
   position: absolute;
   transform-style: preserve-3d;
@@ -281,7 +309,6 @@ body {
 /* Graceful fallback: without scroll-driven animation support, just show the
    header-state scene at full height and the article below it. */
 @supports not (animation-timeline: scroll()) {
-  #stage { height: 70svh; }
   #hint { display: none; }
   #content p { animation: none; }
 }

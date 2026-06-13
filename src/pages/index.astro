@@ -20,28 +20,35 @@ const paragraphs = [
     <title>tents.stl — CSS 3D</title>
   </head>
   <body>
-    <!-- The 3D scene is a sticky stage: it fills the page as a hero, then a
-         scroll-driven animation (CSS only, no JS) flies the camera and collapses
-         the stage into a compact sticky header. -->
-    <header id="stage">
-      <div id="scene">
-        <div id="camera">
-          <Tents />
-          <!-- wordmark is a real object in the 3D scene: it lies on the floor in
-               front of the tents in the hero, then animates its 3D position and
-               rotation to stand up as a caption below them (CSS only). -->
-          <div id="wordmark" aria-hidden="true">N50CAMP</div>
-        </div>
-      </div>
-      <p id="hint">scroll ↓</p>
+    <header id="camera">
+      <Tents />
+      <!-- wordmark is a real object in the 3D scene: it lies on the floor in
+           front of the tents in the hero, then animates its 3D position and
+           rotation to stand up as a caption below them (CSS only). -->
+      <div id="wordmark" aria-hidden="true">N50CAMP</div>
+      <ul>
+        <li>
+          <a href="google.com">Alpha</a>
+        </li>
+        <li>
+          <a href="google.com">Beta</a>
+        </li>
+        <li>
+          <a href="google.com">Gamma</a>
+        </li>
+        <li>
+          <a href="google.com">Delta</a>
+        </li>
+      </ul>
     </header>
+    <p id="hint">scroll ↓</p>
 
     <main id="content">
       <h1>tents.stl</h1>
       <p class="lede">
-        A campsite of five tents, every face a <code>&lt;div&gt;</code> placed with CSS 3D
-        transforms — no WebGL. The header above is the same scene, flown into place by a
-        scroll-driven animation.
+        A campsite of five tents, every face a <code>&lt;div&gt;</code> placed with
+        CSS 3D transforms — no WebGL. The header above is the same scene, flown into
+        place by a scroll-driven animation.
       </p>
       {paragraphs.map((text) => <p>{text}</p>)}
     </main>

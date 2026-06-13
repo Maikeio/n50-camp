@@ -103,35 +103,31 @@ export function SideTent(): VNode {
 }
 
 export default function Tents(): VNode {
+  const SIDE_TENTS = 4;
   return (
     <>
-      <div class="tent-position" style="transform:translate3d(0,0,-45px)">
+      <div
+        class="tent-position tent-position--center"
+        style="--row-y:0px;--angle:0deg"
+      >
         <CenterTent />
       </div>
-      <div
-        class="tent-position"
-        style="transform:rotateZ(calc(var(--bend) * 45deg)) translate3d(-12.74px,-1400px,-47px)"
-      >
-        <SideTent />
-      </div>
-      <div
-        class="tent-position"
-        style="transform:rotateZ(calc(var(--bend) * 22.5deg)) translate3d(-12.74px,-700px,-47px)"
-      >
-        <SideTent />
-      </div>
-      <div
-        class="tent-position"
-        style="transform:rotateZ(calc(var(--bend) * -22.5deg)) translate3d(-12.74px,700px,-47px)"
-      >
-        <SideTent />
-      </div>
-      <div
-        class="tent-position"
-        style="transform:rotateZ(calc(var(--bend) * -45deg)) translate3d(-12.74px,1400px,-47px)"
-      >
-        <SideTent />
-      </div>
+      {[...Array(SIDE_TENTS)].map((_, i) => (
+        <>
+          <div
+            class={"tent-position" + (i >= 2 ? " hero-only" : "")}
+            style={`--row-y:${-700 * (i + 1)}px;--angle:${22.5 * (i + 1)}deg`}
+          >
+            <SideTent />
+          </div>
+          <div
+            class={"tent-position" + (i >= 2 ? " hero-only" : "")}
+            style={`--row-y:${700 * (i + 1)}px;--angle:${-22.5 * (i + 1)}deg`}
+          >
+            <SideTent />
+          </div>
+        </>
+      ))}
     </>
   );
 }
