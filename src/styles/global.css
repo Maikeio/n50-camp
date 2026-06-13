@@ -44,16 +44,23 @@ body {
   --k: 4; /* supersample factor — must match the ×k coordinate scale baked into src/components/Tents.tsx */
   --ik: calc(1 / var(--k)); /* its inverse, for the camera's supersample undo */
   --edge: 1.4; /* tent edge thickness (px before the ×k supersample) */
+  --hero-camera-top: 50vh;
+}
+
+@media (min-aspect-ratio: 3 / 2) {
+  :root {
+    --hero-camera-top: 30vh;
+  }
 }
 
 @keyframes intro {
   from {
     /* hero: a 3/4 view looking down onto the row, room at the bottom for the
        wordmark lying on the floor */
-    --camera-top: 50vh;
+    --camera-top: var(--hero-camera-top);
     --rotX: 40deg;
     --rotY: 0deg;
-    --rotZ: 110deg;
+    --rotZ: 90deg;
     --p: 0; /* hero end of the adaptive zoom blend (see #camera) */
     --dist: 20px;
     --panX: 0px;
@@ -95,6 +102,61 @@ body {
   animation-timeline: scroll(root block);
   animation-range: 0 72vh;
 }
+
+.wordmark-links {
+  position: absolute;
+  top: calc(60% + 40% * var(--p));
+  left: 50%;
+  margin: calc(0.1em + 0.15em * var(--p)) 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  letter-spacing: 0.08em;
+}
+
+.wordmark-links li {
+  --stack-y: 0em;
+  --row-x: 0em;
+  position: absolute;
+  left: 0;
+  top: 0;
+  translate:
+    calc(-50% + var(--row-x) * var(--p))
+    calc(var(--stack-y) * (1 - var(--p)));
+  scale: calc(0.92 + 0.08 * var(--p));
+}
+
+.wordmark-links li:nth-child(1) {
+  --row-x: -10em;
+}
+
+.wordmark-links li:nth-child(2) {
+  --stack-y: 1em;
+  --row-x: -3.333em;
+}
+
+.wordmark-links li:nth-child(3) {
+  --stack-y: 2em;
+  --row-x: 3.333em;
+}
+
+.wordmark-links li:nth-child(4) {
+  --stack-y: 3em;
+  --row-x: 10em;
+}
+
+.wordmark-links a {
+  color: #aaa;
+  text-decoration: none;
+}
+
+.wordmark-links a:hover,
+.wordmark-links a:focus-visible {
+  color: #fff;
+  text-decoration: underline;
+}
+
 /* rotateZ(90deg) makes the text read along the row (model y); rotateX tilts it
    from flat-on-floor (0deg) to standing-upright (90deg); translate(-50%,-50%)
    centres the text box on its anchor point. */
@@ -104,40 +166,13 @@ body {
        arc centre (full centre would be ~1750); scaled up so it reads big in the
        hero. scale() sits before the centring translate so it grows about its
        own centre. It eases back to 1 as it stands up into the dock caption. */
-    transform: translate3d(880px, 0px, -120px) rotateZ(-110deg) rotateX(0deg) scale(1.9) translate(-50%, -50%);
+    transform: translate3d(880px, 0px, -120px) rotateZ(-90deg) rotateX(0deg) scale(1.9) translate(-50%, -50%);
   }
-    30% {
-    /* lying flat on the floor (rotateX 0), about halfway from the tents to the
-       arc centre (full centre would be ~1750); scaled up so it reads big in the
-       hero. scale() sits before the centring translate so it grows about its
-       own centre. It eases back to 1 as it stands up into the dock caption. */
-    transform: translate3d(700px, 0px, -150px) rotateZ(-90deg) rotateX(0deg) scale(1.9) translate(-50%, -50%);
-  }
+
   to {
     /* standing upright below the tents, facing the camera (rotateX -90) */
     transform: translate3d(0px, 0px, -300px) rotateZ(-90deg) rotateX(-90deg) scale(1) translate(-50%, -50%);
   }
-}
-
-/* "scroll" hint, fades out as soon as you start */
-#hint {
-  position: fixed;
-  bottom: 5vh;
-  left: 0;
-  right: 0;
-  margin: 0;
-  text-align: center;
-  color: #777;
-  font-size: 13px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  pointer-events: none;
-  animation: hint-fade linear both;
-  animation-timeline: scroll(root block);
-  animation-range: 0 12vh;
-}
-@keyframes hint-fade {
-  to { opacity: 0; transform: translateY(8px); }
 }
 
 /* ---------------------------------------------------------------------------
@@ -147,7 +182,7 @@ body {
   position: fixed;
   left: 50%;
   top: var(--camera-top);
-  z-index: 2;
+  z-index: 3;
   /* Viewport-adaptive scene scale for the two end states. Defined HERE (a
      static declaration), not inside the scroll @keyframes, so it re-resolves
      live on window resize — Chromium caches vw/vh that appear *inside* an
@@ -171,6 +206,22 @@ body {
     rotateZ(var(--rotZ))
     /* undo the SS× supersample (innermost) — scale3d so depth (z) shrinks too */
     scale3d(var(--ik), var(--ik), var(--ik));
+}
+
+#header-backdrop {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 22vh;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    #000 0,
+    #000 16vh,
+    transparent 22vh
+  );
 }
 
 .tent-position {
@@ -282,6 +333,15 @@ body {
 #content code {
   color: #6cf;
 }
+#content a {
+  color: #aaa;
+  text-decoration: none;
+}
+#content a:hover,
+#content a:focus-visible {
+  color: #fff;
+  text-decoration: underline;
+}
 #content .lede {
   color: #aaa;
   font-size: 1.05em;
@@ -293,6 +353,32 @@ body {
   animation-timeline: view();
   animation-range: entry 8% cover 32%;
 }
+
+#site-footer {
+  position: relative;
+  z-index: 1;
+  max-width: 70ch;
+  margin: 0 auto;
+  padding: 0 28px 3rem;
+}
+
+#site-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
+
+#site-footer a {
+  color: #aaa;
+  text-decoration: none;
+}
+
+#site-footer a:hover,
+#site-footer a:focus-visible {
+  color: #fff;
+  text-decoration: underline;
+}
+
 @keyframes reveal {
   from {
     opacity: 0;
@@ -309,6 +395,5 @@ body {
 /* Graceful fallback: without scroll-driven animation support, just show the
    header-state scene at full height and the article below it. */
 @supports not (animation-timeline: scroll()) {
-  #hint { display: none; }
   #content p { animation: none; }
 }

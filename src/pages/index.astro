@@ -1,15 +1,6 @@
 ---
 import "../styles/global.css";
 import Tents from "../components/Tents";
-
-const paragraphs = [
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus.",
-  "Nulla facilisi. Aenean nec eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices.",
-  "Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec ante sed lacus.",
-  "Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam.",
-  "Praesent id justo in neque elementum ultrices. Aenean pulvinar. Praesent eleifend, augue ut tincidunt commodo, est nisl porta erat, vitae pellentesque arcu metus eu mi. Nulla facilisi. Phasellus a est. Mauris sit amet ligula sit amet erat.",
-];
 ---
 
 <!doctype html>
@@ -25,32 +16,68 @@ const paragraphs = [
       <!-- wordmark is a real object in the 3D scene: it lies on the floor in
            front of the tents in the hero, then animates its 3D position and
            rotation to stand up as a caption below them (CSS only). -->
-      <div id="wordmark" aria-hidden="true">N50CAMP</div>
-      <ul>
-        <li>
-          <a href="google.com">Alpha</a>
-        </li>
-        <li>
-          <a href="google.com">Beta</a>
-        </li>
-        <li>
-          <a href="google.com">Gamma</a>
-        </li>
-        <li>
-          <a href="google.com">Delta</a>
-        </li>
-      </ul>
+      <div id="wordmark">
+        <span aria-hidden="true">N50CAMP</span>
+        <ul class="wordmark-links">
+          <li><a href="https://wiki.n50.camp">Wiki</a></li>
+          <li><a href="https://pretalx.n50.camp">Fahrplan</a></li>
+          <li><a href="https://engel.n50.camp">Engeln</a></li>
+          <li><a href="https://engel.n50.camp">Tickets</a></li>
+        </ul>
+      </div>
     </header>
-    <p id="hint">scroll ↓</p>
+    <div id="header-backdrop" aria-hidden="true"></div>
 
     <main id="content">
-      <h1>tents.stl</h1>
       <p class="lede">
-        A campsite of five tents, every face a <code>&lt;div&gt;</code> placed with
-        CSS 3D transforms — no WebGL. The header above is the same scene, flown into
-        place by a scroll-driven animation.
+        n50.camp ist ein gemeinnütziges Outdoor-Hacker-Camp, das vom 10. bis 12.
+        Juli 2026 auf dem Pfadfinderplatz Greifenhorst (etwa 10km westlich von
+        Mainz) stattfindet. n50.camp ist die erste camping Veranstaltung von
+        n50.lat. Alle Informationen zur Veranstaltung, einschließlich Standort,
+        Mitwirkung als Freiwillige(r), Organisation und Team-Details, sind im
+        WHY2025-Wiki zu finden.
       </p>
-      {paragraphs.map((text) => <p>{text}</p>)}
+      <p>GO TOUCH GRASS</p>
+      <p>
+        <time datetime="2026-07-10T15:00:00+02:00">July 10, 2026, 15:00</time>
+        <br />
+        until <br />
+        <time datetime="2026-07-12T18:00:00+02:00">July 12, 2026, 18:00</time>
+        <br />
+        <a href="/n50-camp-2026.ics" download>Add to calendar</a>
+      </p>
+      <address>
+        Pfadfinderplatz Greifenhorst<br />
+        St. Georgsweg 1<br />
+        55271 Stadecken-Elsheim<br />
+        Germany
+      </address>
+      <ul>
+        <li>
+          <a
+            href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=;49.9100041,8.1212092"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Route planen ↗
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www.google.com/maps/dir/?api=1&destination=49.9100041%2C8.1212092"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Route planen (Google Maps) ↗
+          </a>
+        </li>
+      </ul>
     </main>
+    <footer id="site-footer">
+      <nav aria-label="Rechtliche Informationen">
+        <a href="https://n50.lat/privacypolicy.html">Datenschutzerklärung</a>
+        <a href="https://n50.lat/imprint.html">Impressum</a>
+      </nav>
+    </footer>
   </body>
 </html>
