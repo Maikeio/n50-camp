@@ -1,0 +1,149 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  color: #ddd;
+  font: 13px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  overflow: hidden;
+}
+
+/* Camera knobs live as CSS custom properties so the sliders only copy a number
+   into a variable — no JavaScript math anywhere. */
+:root {
+  --fov: 900px;    /* perspective: smaller = wider/stronger perspective */
+  --rotX: 90deg;
+  --rotY: 0deg;
+  --rotZ: 90deg;
+  --panX: 0px;
+  --panY: 4px;
+  --dist: 150px;   /* dolly along the view axis */
+  --zoom: 1.5;
+  --k: 4;          /* supersample factor — KEEP IN SYNC with SS in scripts/generate.ts */
+}
+
+/* The scene establishes the single shared vanishing point (FOV). */
+#scene {
+  position: absolute;
+  inset: 0;
+  perspective: var(--fov);
+  perspective-origin: 50% 50%;
+}
+
+/* The camera rig sits at screen centre; the model is centred on the origin, so
+   the rotations orbit the model's middle. preserve-3d keeps the tents in 3D. */
+#camera {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-style: preserve-3d;
+  transform:
+    translate(var(--panX), var(--panY))
+    translateZ(var(--dist))
+    scale(var(--zoom))
+    rotateX(var(--rotX))
+    rotateY(var(--rotY))
+    rotateZ(var(--rotZ))
+    /* undo the SS× supersample (innermost) — scale3d so DEPTH (z) shrinks too,
+       not just x/y as a 2D scale() would */
+    scale3d(calc(1 / var(--k)), calc(1 / var(--k)), calc(1 / var(--k)));
+}
+
+/* Each tent wrapper must itself preserve-3d (it is not inherited). */
+.tent {
+  position: absolute;
+  transform-style: preserve-3d;
+}
+
+/* A rectangular side face: placed with translate3d(corner) rotateX(edge-angle),
+   pivoting at its own corner. */
+.face {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0 0;
+  backface-visibility: visible;
+  background: #fff;
+  border: calc(1.4px * var(--k)) solid #000; /* ×k because geometry is laid out SS× */
+}
+
+/* the two slim bottom faces (the tent's feet) are fully black */
+.face--foot {
+  background: #000;
+}
+
+/* Both end caps share this parent, which carries the core rotateY(90deg) that
+   stands the caps up into the y-z plane. Its cap-group children sit in 3D. */
+.caps {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0 0;
+  transform-style: preserve-3d;
+}
+
+/* End cap = a single SVG chevron (white fill + black stroke), positioned in the
+   cap plane. One raster, so the fill/stroke edge stays crisp; 3D-transformed by
+   CSS so it follows the camera with no JS. */
+.cap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0 0;
+  backface-visibility: visible;
+}
+.cap svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.cap polygon {
+  fill: #fff;
+  stroke: #000;
+  stroke-width: calc(1.4 * var(--k)); /* ×k because geometry is laid out SS× */
+  stroke-linejoin: miter;
+}
+
+/* ---- control panel ---- */
+#panel {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 234px;
+  padding: 12px 14px;
+  background: rgba(20, 20, 22, 0.85);
+  border: 1px solid #333;
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+  z-index: 10;
+}
+#panel h1 {
+  margin: 0 0 10px;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888;
+}
+.ctl { margin-bottom: 9px; }
+.ctl label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3px;
+  color: #aaa;
+}
+.ctl label .val { color: #6cf; }
+.ctl input[type="range"] { width: 100%; accent-color: #6cf; }
+#reset {
+  margin-top: 4px;
+  width: 100%;
+  padding: 6px;
+  background: #222;
+  color: #ccc;
+  border: 1px solid #444;
+  border-radius: 5px;
+  cursor: pointer;
+  font: inherit;
+}
+#reset:hover { background: #2c2c2c; }
