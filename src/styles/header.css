@@ -152,16 +152,9 @@ body {
   --row-x: 10em;
 }
 
+/* colors come from the global `a` rule; only the 3D flatten is link-specific */
 .wordmark-links a {
-  color: #aaa;
-  text-decoration: none;
   backface-visibility: hidden;
-}
-
-.wordmark-links a:hover,
-.wordmark-links a:focus-visible {
-  color: #fff;
-  text-decoration: underline;
 }
 
 /* ---------------------------------------------------------------------------
