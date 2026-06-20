@@ -8,21 +8,36 @@ import SideTent from "./SideTent.astro";
 import TentPosition from "./TentPosition.astro";
 
 const SIDE_TENTS = 2;
+// side tents share a baked STL lateral correction (rowX) and depth (rowZ)
+const SIDE_ROW_X = -12.74;
+const SIDE_ROW_Z = -47;
 ---
 
-<TentPosition rowY={0} angle={0} rowX={0} rowZ={-45}>
+<TentPosition rowY={0} angle={0} rowZ={-45}>
   <CenterTent />
 </TentPosition>
 {
   [...Array(SIDE_TENTS)].map((_, i) => (
-    <TentPosition rowY={-700 * (i + 1)} angle={22.5 * (i + 1)} heroOnly={i >= 2}>
+    <TentPosition
+      rowX={SIDE_ROW_X}
+      rowY={-700 * (i + 1)}
+      rowZ={SIDE_ROW_Z}
+      angle={22.5 * (i + 1)}
+      heroOnly={i >= 2}
+    >
       <SideTent />
     </TentPosition>
   ))
 }
 {
   [...Array(SIDE_TENTS)].map((_, i) => (
-    <TentPosition rowY={700 * (i + 1)} angle={-22.5 * (i + 1)} heroOnly={i >= 2}>
+    <TentPosition
+      rowX={SIDE_ROW_X}
+      rowY={700 * (i + 1)}
+      rowZ={SIDE_ROW_Z}
+      angle={-22.5 * (i + 1)}
+      heroOnly={i >= 2}
+    >
       <SideTent />
     </TentPosition>
   ))
