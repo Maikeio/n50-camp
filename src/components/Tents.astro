@@ -5,28 +5,25 @@
 // hero arc and the header line; the camera/scene rig lives in header.css.
 import CenterTent from "./CenterTent.astro";
 import SideTent from "./SideTent.astro";
+import TentPosition from "./TentPosition.astro";
 
 const SIDE_TENTS = 2;
 ---
 
-<div class="tent-position tent-position--center" style="--row-y:0px;--angle:0deg">
+<TentPosition rowY={0} angle={0} rowX={0} rowZ={-45}>
   <CenterTent />
-</div>
+</TentPosition>
 {
   [...Array(SIDE_TENTS)].map((_, i) => (
-    <Fragment>
-      <div
-        class:list={["tent-position", { "hero-only": i >= 2 }]}
-        style={`--row-y:${-700 * (i + 1)}px;--angle:${22.5 * (i + 1)}deg`}
-      >
-        <SideTent />
-      </div>
-      <div
-        class:list={["tent-position", { "hero-only": i >= 2 }]}
-        style={`--row-y:${700 * (i + 1)}px;--angle:${-22.5 * (i + 1)}deg`}
-      >
-        <SideTent />
-      </div>
-    </Fragment>
+    <TentPosition rowY={-700 * (i + 1)} angle={22.5 * (i + 1)} heroOnly={i >= 2}>
+      <SideTent />
+    </TentPosition>
+  ))
+}
+{
+  [...Array(SIDE_TENTS)].map((_, i) => (
+    <TentPosition rowY={700 * (i + 1)} angle={-22.5 * (i + 1)} heroOnly={i >= 2}>
+      <SideTent />
+    </TentPosition>
   ))
 }

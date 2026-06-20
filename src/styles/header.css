@@ -194,10 +194,9 @@ header {
   );
 }
 
+/* --row-x/--row-y/--row-z and --angle are set per tent by TentPosition.astro */
 .tent-position {
   --arc-radius: 1750px;
-  --row-x: -12.74px;
-  --z: -47px;
   position: absolute;
   transform-style: preserve-3d;
   transform:
@@ -210,7 +209,7 @@ header {
         var(--row-y) * (1 - var(--bend)) -
         var(--arc-radius) * sin(var(--angle)) * var(--bend)
       ),
-      var(--z)
+      var(--row-z)
     )
     rotateZ(calc(var(--angle) * var(--bend)));
 }
@@ -231,11 +230,6 @@ header {
     background-color: #000;
     fill: #000;
   }
-}
-
-.tent-position--center {
-  --row-x: 0px;
-  --z: -45px;
 }
 
 .tent {

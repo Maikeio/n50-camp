@@ -1,0 +1,25 @@
+---
+// Places a tent in the scene: --row-* and --angle drive the hero-arc→header-line
+// fly (via --bend in header.css); the tent geometry comes in through the slot.
+// rowX/rowZ default to the side-tent placement (rowX is a baked STL correction);
+// the center tent passes rowX={0} (true centerline) and a nearer rowZ.
+interface Props {
+  rowY: number;
+  angle: number;
+  rowX?: number;
+  rowZ?: number;
+  heroOnly?: boolean;
+}
+const { rowY, angle, rowX = -12.74, rowZ = -47, heroOnly = false } = Astro.props;
+
+const vars = [
+  `--row-x:${rowX}px`,
+  `--row-y:${rowY}px`,
+  `--row-z:${rowZ}px`,
+  `--angle:${angle}deg`,
+];
+---
+
+<div class:list={["tent-position", { "hero-only": heroOnly }]} style={vars.join(";")}>
+  <slot />
+</div>
