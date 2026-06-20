@@ -1,0 +1,32 @@
+---
+// The five tents — every face and chevron cap as a CSS-3D-transformed element.
+// This file is the source of truth: originally derived from tents.stl, now
+// maintained by hand. Each wrapper's --bend term flies its tent between the
+// hero arc and the header line; the camera/scene rig lives in header.css.
+import CenterTent from "./CenterTent.astro";
+import SideTent from "./SideTent.astro";
+
+const SIDE_TENTS = 2;
+---
+
+<div class="tent-position tent-position--center" style="--row-y:0px;--angle:0deg">
+  <CenterTent />
+</div>
+{
+  [...Array(SIDE_TENTS)].map((_, i) => (
+    <Fragment>
+      <div
+        class:list={["tent-position", { "hero-only": i >= 2 }]}
+        style={`--row-y:${-700 * (i + 1)}px;--angle:${22.5 * (i + 1)}deg`}
+      >
+        <SideTent />
+      </div>
+      <div
+        class:list={["tent-position", { "hero-only": i >= 2 }]}
+        style={`--row-y:${700 * (i + 1)}px;--angle:${-22.5 * (i + 1)}deg`}
+      >
+        <SideTent />
+      </div>
+    </Fragment>
+  ))
+}

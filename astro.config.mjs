@@ -1,11 +1,8 @@
 import { defineConfig } from "astro/config";
-import preact from "@astrojs/preact";
 
-// Preact integration so <Tents> can be authored in real JSX and rendered to
-// static HTML at build time. No `client:*` directive is used, so the site ships
-// zero JavaScript — the camera fly-in and reveals are pure CSS.
+// The site ships zero JavaScript — every component is a static .astro file and
+// the camera fly-in is pure CSS.
 export default defineConfig({
-  integrations: [preact()],
   build: {
     // emit all CSS into <style> tags in the HTML head instead of a linked
     // stylesheet — saves a request (the font is already inlined into the CSS)
