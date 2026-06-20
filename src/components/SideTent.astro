@@ -1,7 +1,9 @@
 ---
 import type { TentPlacement } from "./tent";
 import { tentStyle } from "./tent";
-type Props = TentPlacement;
+interface Props extends TentPlacement {
+  heroOnly?: boolean;
+}
 const props = Astro.props;
 ---
 

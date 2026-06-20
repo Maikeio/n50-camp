@@ -7,7 +7,6 @@ export interface TentPlacement {
   rowY: number;
   rowZ?: number;
   angle: number;
-  heroOnly?: boolean;
 }
 
 export function tentStyle({ rowX = 0, rowY, rowZ = 0, angle }: TentPlacement): string {
