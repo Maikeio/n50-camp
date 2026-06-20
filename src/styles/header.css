@@ -74,10 +74,7 @@ body {
 
 /* every wordmark layer is single-sided, so its back face never shows */
 #wordmark,
-#wordmark > span,
-.wordmark-links,
-.wordmark-links li,
-.wordmark-links a {
+#wordmark * {
   backface-visibility: hidden;
 }
 
@@ -110,7 +107,7 @@ body {
   transform: translateZ(1px);
 }
 
-.wordmark-links {
+#wordmark ul {
   position: absolute;
   top: calc(60% + 40% * var(--p));
   left: 50%;
@@ -126,7 +123,7 @@ body {
 
 /* each link is placed from its 0-based index --i: stacked one line apart in the
    hero (p=0), spread evenly across a row from -10em to +10em in the header (p=1) */
-.wordmark-links li {
+#wordmark li {
   --i: 0;
   position: absolute;
   left: 0;
@@ -140,9 +137,9 @@ body {
     scale(calc(0.92 + 0.08 * var(--p)));
 }
 
-.wordmark-links li:nth-child(2) { --i: 1; }
-.wordmark-links li:nth-child(3) { --i: 2; }
-.wordmark-links li:nth-child(4) { --i: 3; }
+#wordmark li:nth-child(2) { --i: 1; }
+#wordmark li:nth-child(3) { --i: 2; }
+#wordmark li:nth-child(4) { --i: 3; }
 
 /* ---------------------------------------------------------------------------
    The 3D scene (unchanged technique; camera now driven by the intro animation)
