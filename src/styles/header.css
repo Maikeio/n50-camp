@@ -102,8 +102,11 @@ body {
     translate(-50%, -50%);
 }
 
-#wordmark > span {
-  display: block;
+/* the wordmark IS the page's <h1>; strip the UA heading margin/size so it
+   inherits the container's font, then lift it onto the plane */
+#wordmark > h1 {
+  margin: 0;
+  font: inherit;
   transform: translateZ(1px);
 }
 

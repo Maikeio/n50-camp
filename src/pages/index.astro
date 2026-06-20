@@ -7,24 +7,25 @@ import Tents from "../components/Tents";
 <!doctype html>
 <html lang="en">
   <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>n50.camp</title>
-      <script is:inline>
-        (() => {
-          // load the scroll-driven-animation polyfill only where the browser
-          // lacks native support (currently Firefox)
-          const hasNativeScrollTimeline = globalThis.CSS?.supports?.("animation-timeline", "scroll()") === true;
-          if (hasNativeScrollTimeline) {
-            return;
-          }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>n50.camp</title>
+    <script is:inline>
+      (() => {
+        // load the scroll-driven-animation polyfill only where the browser
+        // lacks native support (currently Firefox)
+        const hasNativeScrollTimeline =
+          globalThis.CSS?.supports?.("animation-timeline", "scroll()") === true;
+        if (hasNativeScrollTimeline) {
+          return;
+        }
 
-          const script = document.createElement("script");
-          script.src = "/scroll-driven-animation-polyfill.js";
-          script.defer = true;
-          document.head.append(script);
-        })();
-      </script>
+        const script = document.createElement("script");
+        script.src = "/scroll-driven-animation-polyfill.js";
+        script.defer = true;
+        document.head.append(script);
+      })();
+    </script>
   </head>
   <body>
     <header id="camera">
@@ -32,15 +33,17 @@ import Tents from "../components/Tents";
       <!-- wordmark is a real object in the 3D scene: it lies on the floor in
            front of the tents in the hero, then animates its 3D position and
            rotation to stand up as a caption below them (CSS only). -->
-      <nav id="wordmark">
-        <span aria-hidden="true">N50CAMP</span>
-        <ul>
-          <li><a href="https://wiki.n50.camp">Wiki</a></li>
-          <li><a href="https://fahrplan.n50.camp">Fahrplan</a></li>
-          <li><a href="https://engel.n50.camp">Engeln</a></li>
-          <li><a href="https://tickets.n50.camp">Tickets</a></li>
-        </ul>
-      </nav>
+      <div id="wordmark">
+        <h1>N50CAMP</h1>
+        <nav>
+          <ul>
+            <li><a href="https://wiki.n50.camp">Wiki</a></li>
+            <li><a href="https://fahrplan.n50.camp">Fahrplan</a></li>
+            <li><a href="https://engel.n50.camp">Engeln</a></li>
+            <li><a href="https://tickets.n50.camp">Tickets</a></li>
+          </ul>
+        </nav>
+      </div>
     </header>
     <div id="header-backdrop" aria-hidden="true"></div>
 
@@ -52,10 +55,14 @@ import Tents from "../components/Tents";
       </p>
       <p>GO TOUCH GRASS</p>
       <p>
-        <time datetime="2026-07-10T15:00:00+02:00">10. Juli 2026, 15:00 Uhr</time>
+        <time datetime="2026-07-10T15:00:00+02:00"
+          >10. Juli 2026, 15:00 Uhr</time
+        >
         <br />
         bis <br />
-        <time datetime="2026-07-12T18:00:00+02:00">12. Juli 2026, 18:00 Uhr</time>
+        <time datetime="2026-07-12T18:00:00+02:00"
+          >12. Juli 2026, 18:00 Uhr</time
+        >
         <br />
         <a href="/n50-camp-2026.ics" download>Zum Kalender hinzufügen</a>
       </p>
