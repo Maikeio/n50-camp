@@ -1,4 +1,4 @@
-/* vendored wordmark font (woff2 in src/fonts/; Vite resolves + hashes the URL) */
+/* vendored wordmark font (woff2 in src/fonts/; Vite inlines it as a data URL) */
 @font-face {
   font-family: "Gidole";
   src: url("../fonts/Gidole-Regular.woff2") format("woff2");
@@ -14,72 +14,46 @@ html {
   color: #ddd;
   font: 16px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace;
 }
-body {
-  margin: 0;
+body { margin: 0; }
+
+/* links: dim grey, brighten + underline on interaction (wordmark links in
+   header.css restate this for their 3D context) */
+a {
+  color: #aaa;
+  text-decoration: none;
+}
+a:hover,
+a:focus-visible {
+  color: #fff;
+  text-decoration: underline;
 }
 
-/* ---------------------------------------------------------------------------
-   Article — hidden under the hero at first, revealed paragraph-by-paragraph
-   --------------------------------------------------------------------------- */
-#content {
+/* article + footer share one centered column below the hero */
+main,
+footer {
   position: relative;
   z-index: 1;
   max-width: 70ch;
   margin: 0 auto;
+}
+
+main {
   /* top padding reserves the hero screen; text begins just below the final band */
   padding: 100svh 28px 1.6rem;
 }
-#content > :last-child {
-  margin-bottom: 0;
-}
-#content h1 {
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  letter-spacing: 0.04em;
-  margin: 0 0 0.6em;
-  color: #fff;
-}
-#content code {
-  color: #6cf;
-}
-#content a {
-  color: #aaa;
-  text-decoration: none;
-}
-#content a:hover,
-#content a:focus-visible {
-  color: #fff;
-  text-decoration: underline;
-}
-#content .lede {
+main > :last-child { margin-bottom: 0; }
+main p { margin: 0 0 1.6em; }
+main .lede {
   color: #aaa;
   font-size: 1.05em;
 }
-#content p {
-  margin: 0 0 1.6em;
-}
 
-#site-footer {
-  position: relative;
-  z-index: 1;
-  max-width: 70ch;
-  margin: 0 auto;
-  padding: 1.6rem 28px 1.6rem;
+footer {
+  padding: 1.6rem 28px;
   border-top: 1px solid #333;
 }
-
-#site-footer nav {
+footer nav {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem 1.5rem;
-}
-
-#site-footer a {
-  color: #aaa;
-  text-decoration: none;
-}
-
-#site-footer a:hover,
-#site-footer a:focus-visible {
-  color: #fff;
-  text-decoration: underline;
 }
