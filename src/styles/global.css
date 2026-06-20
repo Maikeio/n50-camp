@@ -43,7 +43,8 @@ main {
 }
 main > :last-child { margin-bottom: 0; }
 main p { margin: 0 0 1.6em; }
-main .lede {
+/* lede: the opening paragraph */
+main > p:first-of-type {
   color: #aaa;
   font-size: 1.05em;
 }
