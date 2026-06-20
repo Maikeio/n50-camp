@@ -12,14 +12,15 @@ import Tents from "../components/Tents";
       <title>n50.camp</title>
       <script is:inline>
         (() => {
-          const isFirefox = /Firefox\/\d+|FxiOS\//.test(navigator.userAgent);
+          // load the scroll-driven-animation polyfill only where the browser
+          // lacks native support (currently Firefox)
           const hasNativeScrollTimeline = globalThis.CSS?.supports?.("animation-timeline", "scroll()") === true;
-          if (!isFirefox || hasNativeScrollTimeline) {
+          if (hasNativeScrollTimeline) {
             return;
           }
 
           const script = document.createElement("script");
-          script.src = "/n50-scroll-polyfill.js";
+          script.src = "/scroll-driven-animation-polyfill.js";
           script.defer = true;
           document.head.append(script);
         })();
