@@ -2,8 +2,12 @@
 
 Renders five camping tents — every face a `<div>` placed with **CSS 3D
 transforms** (no WebGL, no JS 3D math). Built with **[Astro](https://astro.build)**:
-the tent markup is **static HTML at build time** and the site ships **zero
-JavaScript** — the hero, the camera fly-in and the reveals are all pure CSS.
+the tent markup is **HTML rendered on the server** and the site ships **zero
+client JavaScript** — the hero, the camera fly-in and the reveals are all pure
+CSS. Pages render **per request** (Astro `output: "server"` via the
+[`@astrojs/node`](https://docs.astro.build/en/guides/integrations-guide/node/)
+standalone adapter), so they can use request-time data such as the current date
+for time-based features.
 
 ## Run
 
@@ -12,7 +16,15 @@ nix shell nixpkgs#nodejs --command sh -c "npm install && npm run dev"
 ```
 
 Open the printed URL (e.g. http://localhost:4321). `npm run build` emits the
-static site to `dist/`; `npm run check` runs the strict TypeScript check.
+Node server (`dist/server/entry.mjs`) plus static assets (`dist/client/`);
+`npm run check` runs the strict TypeScript check.
+
+## Deploy
+
+`nix build .#n50-camp-server` produces a launcher that runs the standalone
+server; `N50_CAMP_HOST` / `N50_CAMP_PORT` (defaults `::` / `8080`) pick the bind
+address. The flake also ships `nixosModules.default`, exposing
+`services.n50-camp` (a hardened, sandboxed systemd service).
 
 ## How it works
 

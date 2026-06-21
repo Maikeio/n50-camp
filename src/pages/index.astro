@@ -2,6 +2,12 @@
 import "../styles/global.css";
 import "../styles/header.css";
 import Tents from "../components/Tents.astro";
+
+// Until the CfP closes (03.07.2026 02:00 Europe/Berlin — CEST, so UTC+2) the
+// header points at the call for participation; afterwards it points at the
+// Fahrplan. Rendered per request (SSR), so this flips on its own at the cutoff.
+const fahrplanCutoff = new Date("2026-07-03T02:00:00+02:00");
+const showCfp = new Date() < fahrplanCutoff;
 ---
 
 <!doctype html>
@@ -35,7 +41,17 @@ import Tents from "../components/Tents.astro";
         <nav>
           <ul>
             <li><a href="https://wiki.n50.camp">Wiki</a></li>
-            <li><a href="https://fahrplan.n50.camp">Fahrplan</a></li>
+            {
+              showCfp ? (
+                <li>
+                  <a href="https://cfp.n50.camp">CfP</a>
+                </li>
+              ) : (
+                <li>
+                  <a href="https://fahrplan.n50.camp">Fahrplan</a>
+                </li>
+              )
+            }
             <li><a href="https://engel.n50.camp">Engeln</a></li>
             <li><a href="https://tickets.n50.camp">Tickets</a></li>
           </ul>
