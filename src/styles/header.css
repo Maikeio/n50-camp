@@ -23,6 +23,14 @@ body {
 @property --camera-top { syntax: "<length-percentage>"; inherits: true; initial-value: 10svh; }
 /* 1 = tents bent into a quarter-circle arc (hero); 0 = straight line (header) */
 @property --bend { syntax: "<number>"; inherits: true; initial-value: 0; }
+/* Viewport-adaptive scene scales (assigned below in camera). Registered so that
+   a UA which can't evaluate their tan(atan2(<viewport-length>, …)) value — Firefox
+   can't divide a relative length — falls back to these constant initial-values
+   instead of invalidating the whole camera transform (which would flatten the
+   scene). Firefox then renders a static-scale 3D scene; the scroll polyfill sets
+   the camera transform numerically anyway, so it stays adaptive there too. */
+@property --fit-hero { syntax: "<number>"; inherits: false; initial-value: 1; }
+@property --fit-dock { syntax: "<number>"; inherits: false; initial-value: 0.6; }
 
 :root {
   --k: 4; /* supersample factor — must match the ×k coordinate scale baked into src/components/Tents.tsx */
