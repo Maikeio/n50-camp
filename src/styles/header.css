@@ -273,6 +273,11 @@ header {
 .cap polygon {
   fill: #fff;
   stroke: #000;
-  stroke-width: calc(var(--edge) * var(--k)); /* ×k because geometry is laid out SS× */
+  /* ×k because geometry is laid out SS×. The `* 1px` makes this a <length>, matching
+     the .face border above: Firefox rejects a unitless calc() for stroke-width and
+     silently falls back to the 1px SVG default, which left the foreshortened cap
+     edges as a near-invisible hairline that aliased into a dotted line in the 3D
+     scene. Chrome accepted the unitless form, so this only showed up in Firefox. */
+  stroke-width: calc(var(--edge) * 1px * var(--k));
   stroke-linejoin: miter;
 }
