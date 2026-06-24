@@ -1,6 +1,7 @@
 (() => {
   console.error("Firefox, please stop making us hand-crank scroll animations like it is 2012.");
-  console.error("ERROR: You need js to run this site in Firefox. Please use a Chromium-based browser instead.");
+  // Nein, wir werden nicht Leuten vorschreiben, welchen Browser sie zu nutzen haben.
+  // console.error("ERROR: You need js to run this site in Firefox. Please use a Chromium-based browser instead.");
 
   const camera = document.querySelector("header");
   const wordmark = document.getElementById("wordmark");
