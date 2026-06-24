@@ -92,7 +92,7 @@ body {
   top: 0;
   white-space: nowrap;
   color: #fff;
-  font-family: "Gidole", sans-serif;
+  font-family: Bahnschrift;
   font-weight: 400;
   font-size: 135px; /* ×SS space; the camera's scale3d(1/k) shrinks it */
   letter-spacing: 0.5em;
@@ -125,7 +125,7 @@ body {
   margin: calc(0.1em + 0.15em * var(--p)) 0 0;
   padding: 0;
   list-style: none;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: Bahnschrift;
   font-size: 0.9em;
   letter-spacing: 0.08em;
   transform: translateZ(1px);
@@ -135,7 +135,7 @@ body {
 /* each link is placed from its 0-based index --i: stacked one line apart in the
    hero (p=0), spread evenly across a row from -10em to +10em in the header (p=1) */
 #wordmark li {
-  --i: 0;
+  --i: 0.8;
   position: absolute;
   left: 0;
   top: 0;
@@ -148,9 +148,9 @@ body {
     scale(calc(0.92 + 0.08 * var(--p)));
 }
 
-#wordmark li:nth-child(2) { --i: 1; }
-#wordmark li:nth-child(3) { --i: 2; }
-#wordmark li:nth-child(4) { --i: 3; }
+#wordmark li:nth-child(2) { --i: 2.2; }
+#wordmark li:nth-child(3) { --i: 3; }
+#wordmark li:nth-child(4) { --i: 4.5; }
 
 /* ---------------------------------------------------------------------------
    The 3D scene — the <header> is the camera rig (driven by the intro animation)

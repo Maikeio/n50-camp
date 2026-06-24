@@ -7,12 +7,20 @@
   font-display: block;
 }
 
+@font-face {
+  font-family: "Bahnschrift";
+  src: url("../fonts/bahnschrift.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
 * { box-sizing: border-box; }
 
 html {
   background: #000;
   color: #ddd;
-  font: 16px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: Bahnschrift;
 }
 body { margin: 0; }
 
@@ -40,13 +48,23 @@ footer {
 main {
   /* top padding reserves the hero screen; text begins just below the final band */
   padding: 100svh 28px 1.6rem;
+  font-size: 1.3em;
 }
 main > :last-child { margin-bottom: 0; }
-main p { margin: 0 0 1.6em; }
+main p { margin: 0 0 1.6em;  line-height: 1.5em; text-align: justify;}
 /* lede: the opening paragraph */
 main > p:first-of-type {
   color: #aaa;
   font-size: 1.05em;
+}
+
+main img {
+  max-width: 100%;
+  max-height: 25em;
+}
+
+main ul {
+  line-height: 1.5em;
 }
 
 footer {
