@@ -8,8 +8,8 @@
 }
 
 @font-face {
-  font-family: "Bahnschrift";
-  src: url("../fonts/bahnschrift.ttf") format("truetype");
+  font-family: "Dinish";
+  src: url("../fonts/dinish.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: block;
@@ -20,7 +20,7 @@
 html {
   background: #000;
   color: #ddd;
-  font-family: Bahnschrift;
+  font-family: Dinish;
 }
 body { margin: 0; }
 

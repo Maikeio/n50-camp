@@ -92,7 +92,7 @@ body {
   top: 0;
   white-space: nowrap;
   color: #fff;
-  font-family: Bahnschrift;
+  font-family: Dinish;
   font-weight: 400;
   font-size: 135px; /* ×SS space; the camera's scale3d(1/k) shrinks it */
   letter-spacing: 0.5em;
@@ -125,7 +125,7 @@ body {
   margin: calc(0.1em + 0.15em * var(--p)) 0 0;
   padding: 0;
   list-style: none;
-  font-family: Bahnschrift;
+  font-family: Dinish;
   font-size: 0.9em;
   letter-spacing: 0.08em;
   transform: translateZ(1px);
