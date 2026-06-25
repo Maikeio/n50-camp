@@ -1,0 +1,81 @@
+/* ---------------------------------------------------------------------------
+   Home-page animation layer. Loaded ONLY by index.astro, on top of header.css.
+   header.css renders the header in its static docked end-state everywhere; this
+   file adds the scroll-driven camera fly-in, so it exists only where the hero
+   does. (No `.hero` class needed — the file's mere presence is the toggle.)
+   --------------------------------------------------------------------------- */
+
+/* the scroll timeline that flies the camera in. While the page is within the
+   range, these animated custom properties override the docked values set on
+   `body` in header.css; past it, the `to` keyframe leaves the docked state. */
+body {
+  animation: intro linear both;
+  animation-timeline: scroll(root block);
+  animation-range: 0 72svh;
+}
+
+/* hero spacer: a full viewport of scroll room for the fly-in. `html main`
+   (not bare `main`) so it beats global.css's `main` padding on specificity —
+   this style is inlined and its cascade order vs. the bundled CSS isn't fixed. */
+html main {
+  padding-top: 100svh;
+}
+
+/* viewport-adaptive hero camera height — only read by the `from` keyframe */
+:root {
+  --hero-camera-top: 50svh;
+}
+@media (min-aspect-ratio: 3 / 2) {
+  :root {
+    --hero-camera-top: 30svh;
+  }
+}
+
+@keyframes intro {
+  from {
+    /* hero: a 3/4 view looking down onto the row, room at the bottom for the
+       wordmark lying on the floor */
+    --camera-top: var(--hero-camera-top);
+    --rotX: 40deg;
+    --rotY: 0deg;
+    --rotZ: 90deg;
+    --p: 0; /* hero end of the adaptive zoom blend (see header rule) */
+    --dist: 20px;
+    --panX: 0px;
+    --panY: -120px;
+    --fov: 1500px;
+    --bend: 1;
+  }
+  to {
+    /* header: side-on row, raised within the band so the caption fits below */
+    --camera-top: 10svh;
+    --rotX: 90deg;
+    --rotY: 0deg;
+    --rotZ: 90deg;
+    --p: 1; /* header end of the adaptive zoom blend (see header rule) */
+    --dist: 30px;
+    --panX: 0px;
+    --panY: -36px;
+    --fov: 900px;
+    --bend: 0;
+  }
+}
+
+/* extra hero-only tents fade to black as the camera docks */
+.hero-only .face,
+.hero-only .cap polygon {
+  animation: hero-only-color linear both;
+  animation-timeline: scroll(root block);
+  animation-range: 0 72svh;
+}
+
+@keyframes hero-only-color {
+  60% {
+    background-color: #000;
+    fill: #000;
+  }
+  to {
+    background-color: #000;
+    fill: #000;
+  }
+}

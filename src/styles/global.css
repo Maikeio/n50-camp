@@ -1,28 +1,32 @@
-/* vendored wordmark font (woff2 in src/fonts/; Vite inlines it as a data URL) */
-@font-face {
-  font-family: "Gidole";
-  src: url("../fonts/Gidole-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: block;
-}
-
+/* vendored body + wordmark font (subset woff2 in src/fonts/; Vite inlines it as
+   a data URL). Dinish is a DIN 1451-inspired open font standing in for the
+   proprietary Bahnschrift the branding was drawn with. */
 @font-face {
   font-family: "Dinish";
   src: url("../fonts/dinish.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
+  /* the font is inlined into the CSS as a data URL, so it's available as soon
+     as the stylesheet parses — block avoids a fallback-then-swap flash */
   font-display: block;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 html {
   background: #000;
   color: #ddd;
-  font-family: Dinish;
+  /* keep the base size/line-height and a sans-serif fallback for when Dinish
+     is unavailable */
+  font:
+    16px/1.7 "Dinish",
+    sans-serif;
 }
-body { margin: 0; }
+body {
+  margin: 0;
+}
 
 /* links: dim grey, brighten + underline on interaction (wordmark links in
    header.css restate this for their 3D context) */
@@ -46,12 +50,19 @@ footer {
 }
 
 main {
-  /* top padding reserves the hero screen; text begins just below the final band */
-  padding: 100svh 28px 1.6rem;
+  /* clear the fixed docked header band; the home page overrides the top with a
+     full screen of scroll room (see `body.hero main` in header.css) */
+  padding: 30svh 28px 1.6rem;
   font-size: 1.3em;
 }
-main > :last-child { margin-bottom: 0; }
-main p { margin: 0 0 1.6em;  line-height: 1.5em; text-align: justify;}
+main > :last-child {
+  margin-bottom: 0;
+}
+main p {
+  margin: 0 0 1.6em;
+  line-height: 1.5em;
+  text-align: justify;
+}
 /* lede: the opening paragraph */
 main > p:first-of-type {
   color: #aaa;

@@ -1,7 +1,10 @@
 (() => {
-  console.error("Firefox, please stop making us hand-crank scroll animations like it is 2012.");
-  // Nein, wir werden nicht Leuten vorschreiben, welchen Browser sie zu nutzen haben.
-  // console.error("ERROR: You need js to run this site in Firefox. Please use a Chromium-based browser instead.");
+  console.error(
+    "Firefox, please stop making us hand-crank scroll animations like it is 2012.",
+  );
+  console.error(
+    "On a Chromium-based browser this site needs no JavaScript at all — it drives the scroll animation natively.",
+  );
 
   const camera = document.querySelector("header");
   const wordmark = document.getElementById("wordmark");
@@ -12,7 +15,8 @@
   document.documentElement.classList.add("firefox-scroll-polyfill");
 
   const stableViewportProbe = document.createElement("div");
-  stableViewportProbe.style.cssText = "position:fixed;left:0;top:0;width:0;height:100svh;visibility:hidden;pointer-events:none;";
+  stableViewportProbe.style.cssText =
+    "position:fixed;left:0;top:0;width:0;height:100svh;visibility:hidden;pointer-events:none;";
   document.documentElement.append(stableViewportProbe);
 
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -36,12 +40,20 @@
   function update() {
     ticking = false;
 
-    const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    const viewportWidth =
+      window.innerWidth || document.documentElement.clientWidth;
     const viewportHeight = stableViewportHeight();
     const progress = clamp(window.scrollY / (viewportHeight * 0.72), 0, 1);
-    const heroTop = viewportWidth / viewportHeight >= 1.5 ? viewportHeight * 0.30 : viewportHeight * 0.50;
-    const cameraTop = lerp(heroTop, viewportHeight * 0.10, progress);
-    const fitHero = clamp(Math.min(viewportWidth / 910, viewportHeight / 390), 0.3, 1.5);
+    const heroTop =
+      viewportWidth / viewportHeight >= 1.5
+        ? viewportHeight * 0.3
+        : viewportHeight * 0.5;
+    const cameraTop = lerp(heroTop, viewportHeight * 0.1, progress);
+    const fitHero = clamp(
+      Math.min(viewportWidth / 910, viewportHeight / 390),
+      0.3,
+      1.5,
+    );
     const fitDock = Math.min(0.6, viewportWidth / 829);
     const sceneScale = lerp(fitHero, fitDock, progress);
 

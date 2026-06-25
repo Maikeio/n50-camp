@@ -1,13 +1,12 @@
 ---
 import "../styles/global.css";
-import "../styles/header.css";
-import Tents from "../components/Tents.astro";
-
-// Until the CfP closes (03.07.2026 02:00 Europe/Berlin — CEST, so UTC+2) the
-// header points at the call for participation; afterwards it points at the
-// Fahrplan. Rendered per request (SSR), so this flips on its own at the cutoff.
-const fahrplanCutoff = new Date("2026-07-03T02:00:00+02:00");
-const showCfp = new Date() < fahrplanCutoff;
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+// The scroll-driven camera animation lives in its own file and is inlined ONLY
+// here (raw import → is:inline <style> below), so only the home page animates.
+// Astro merges all imported CSS into one shared bundle inlined on every page, so
+// a plain `import` would leak it everywhere; this keeps it home-page-only.
+import heroCss from "../styles/hero.css?raw";
 
 // Exclude polyfill on verified chromium browsers (Chrome, Edge, Opera, Brave, Vivaldi, etc.) that support the scroll-driven-animation spec
 const ua = Astro.request.headers.get("user-agent") ?? "";
@@ -16,7 +15,7 @@ const needsScrollPolyfillLoader = !(chromiumMajor > 145);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -41,52 +40,28 @@ const needsScrollPolyfillLoader = !(chromiumMajor > 145);
         </script>
       )
     }
+    <style is:inline set:html={heroCss}></style>
   </head>
   <body>
-    <header>
-      <Tents />
-      <div id="wordmark">
-        <h1>N50CAMP</h1>
-        <nav>
-          <ul>
-            <!--<li><a href="https://wiki.n50.camp">Wiki</a></li>
-            {
-              showCfp ? (
-                <li>
-                  <a href="https://cfp.n50.camp">CfP</a>
-                </li>
-              ) : (
-                <li>
-                  <a href="https://fahrplan.n50.camp">Fahrplan</a>
-                </li>
-              )
-            }-->
-            <li><a href="https://engel.n50.camp">Engeln</a></li>
-            <li><a href="https://tickets.n50.camp">Tickets</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <div id="header-backdrop" aria-hidden="true"></div>
+    <Header />
 
     <main>
       <p>
-        n50camp ist ein Outdoor-Hacker-Camp, das vom 10. bis 12. Juli 2026 auf
+        N50CAMP ist ein Outdoor-Hacker-Camp, das vom 10. bis 12. Juli 2026 auf
         dem Pfadfinderplatz Greifenhorst (etwa 10 km westlich von Mainz)
-        stattfindet. n50camp ist die erste Camping-Veranstaltung von <a href="//n50.lat">n50</a>.
+        stattfindet. N50CAMP ist die erste Camping-Veranstaltung von <a
+          href="//n50.lat">n50</a
+        >.
       </p>
       <p>
-        Du hast Lust einen Vortrag zu halten oder einen Workshop zu veranstalten? Lass es uns unter camp@n50.lat wissen!
+        Du hast Lust einen Vortrag zu halten oder einen Workshop zu veranstalten?
+        Lass es uns unter <a href="mailto:camp@n50.lat">camp@n50.lat</a> wissen!
       </p>
-      <!-- main needs to be high enough so the animation works -->
-      <!-- remove these once you added actual content -->
-      <!-- or fix the css to give main a minimum height that is correct -->
-      <ul>
-        <li><a href="/anreise">Anreise</a></li>
-        <li><a href="/lageplan">Lageplan</a></li>
-        <li><a href="/codeofconduct">Code Of Conduct</a></li>
-        <li><a href="/merch">Merch</a></li>
-      </ul>
+      <nav aria-label="Seiten">
+        <ul>
+          <li><a href="/anreise">Anreise</a></li>
+        </ul>
+      </nav>
       <p>
         <time datetime="2026-07-10T15:00:00+02:00"
           >10. Juli 2026, 15:00 Uhr</time
@@ -126,12 +101,6 @@ const needsScrollPolyfillLoader = !(chromiumMajor > 145);
         </li>
       </ul>
     </main>
-    <footer>
-      <nav aria-label="Rechtliche Informationen">
-        <a href="https://n50.lat/privacypolicy.html">Datenschutzerklärung</a>
-        <a href="https://n50.lat/imprint.html">Impressum</a>
-        <a href="https://github.com/zebreus/n50-camp">Seite bearbeiten</a>
-      </nav>
-    </footer>
+    <Footer />
   </body>
 </html>

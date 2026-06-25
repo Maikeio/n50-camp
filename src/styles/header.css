@@ -1,8 +1,19 @@
-/* the scroll timeline that flies the camera (drives the @property vars below) */
+/* Camera state. The @property initial-values already describe the docked
+   (header) end-state, but we restate the exact `to`-keyframe values here so a
+   static page (every page except the home page) renders the docked camera
+   precisely. The home page loads hero.css on top, whose scroll animation
+   overrides these to fly the camera in. */
 body {
-  animation: intro linear both;
-  animation-timeline: scroll(root block);
-  animation-range: 0 72svh;
+  --camera-top: 10svh;
+  --rotX: 90deg;
+  --rotY: 0deg;
+  --rotZ: 90deg;
+  --p: 1;
+  --dist: 30px;
+  --panX: 0px;
+  --panY: -36px;
+  --fov: 900px;
+  --bend: 0;
 }
 
 /* ---------------------------------------------------------------------------
@@ -10,69 +21,80 @@ body {
    lets a keyframe animation INTERPOLATE them — so a scroll timeline can fly the
    camera. initial-value = the header (end) state, used as a no-JS fallback.
    --------------------------------------------------------------------------- */
-@property --rotX { syntax: "<angle>";  inherits: true; initial-value: 90deg; }
-@property --rotY { syntax: "<angle>";  inherits: true; initial-value: 0deg; }
-@property --rotZ { syntax: "<angle>";  inherits: true; initial-value: 90deg; }
+@property --rotX {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 90deg;
+}
+@property --rotY {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+@property --rotZ {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 90deg;
+}
 /* hero→header progress; 0 = hero, 1 = header. The viewport-adaptive zoom is
    derived from this in the header (kept out of keyframes so it reflows on resize). */
-@property --p { syntax: "<number>"; inherits: true; initial-value: 1; }
-@property --dist { syntax: "<length>"; inherits: true; initial-value: 40px; }
-@property --panX { syntax: "<length>"; inherits: true; initial-value: 0px; }
-@property --panY { syntax: "<length>"; inherits: true; initial-value: 0px; }
-@property --fov  { syntax: "<length>"; inherits: true; initial-value: 900px; }
-@property --camera-top { syntax: "<length-percentage>"; inherits: true; initial-value: 10svh; }
+@property --p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+@property --dist {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 40px;
+}
+@property --panX {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+@property --panY {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+@property --fov {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 900px;
+}
+@property --camera-top {
+  syntax: "<length-percentage>";
+  inherits: true;
+  initial-value: 10svh;
+}
 /* 1 = tents bent into a quarter-circle arc (hero); 0 = straight line (header) */
-@property --bend { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --bend {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
 /* Viewport-adaptive scene scales (assigned below in camera). Registered so that
    a UA which can't evaluate their tan(atan2(<viewport-length>, …)) value — Firefox
    can't divide a relative length — falls back to these constant initial-values
    instead of invalidating the whole camera transform (which would flatten the
    scene). Firefox then renders a static-scale 3D scene; the scroll polyfill sets
    the camera transform numerically anyway, so it stays adaptive there too. */
-@property --fit-hero { syntax: "<number>"; inherits: false; initial-value: 1; }
-@property --fit-dock { syntax: "<number>"; inherits: false; initial-value: 0.6; }
+@property --fit-hero {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+@property --fit-dock {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0.6;
+}
 
 :root {
   --k: 4; /* supersample factor — must match the ×k coordinate scale baked into src/components/Tents.tsx */
   --ik: calc(1 / var(--k)); /* its inverse, for the camera's supersample undo */
   --edge: 1.4; /* tent edge thickness (px before the ×k supersample) */
-  --hero-camera-top: 50svh;
-}
-
-@media (min-aspect-ratio: 3 / 2) {
-  :root {
-    --hero-camera-top: 30svh;
-  }
-}
-
-@keyframes intro {
-  from {
-    /* hero: a 3/4 view looking down onto the row, room at the bottom for the
-       wordmark lying on the floor */
-    --camera-top: var(--hero-camera-top);
-    --rotX: 40deg;
-    --rotY: 0deg;
-    --rotZ: 90deg;
-    --p: 0; /* hero end of the adaptive zoom blend (see header rule) */
-    --dist: 20px;
-    --panX: 0px;
-    --panY: -120px;
-    --fov: 1500px;
-    --bend: 1;
-  }
-  to {
-    /* header: side-on row, raised within the band so the caption fits below */
-    --camera-top: 10svh;
-    --rotX: 90deg;
-    --rotY: 0deg;
-    --rotZ: 90deg;
-    --p: 1; /* header end of the adaptive zoom blend (see header rule) */
-    --dist: 30px;
-    --panX: 0px;
-    --panY: -36px;
-    --fov: 900px;
-    --bend: 0;
-  }
 }
 
 /* wordmark: a real object in the 3D scene (a child of the header, so it lives in
@@ -92,22 +114,19 @@ body {
   top: 0;
   white-space: nowrap;
   color: #fff;
-  font-family: Dinish;
+  font-family: "Dinish", sans-serif;
   font-weight: 400;
   font-size: 135px; /* ×SS space; the camera's scale3d(1/k) shrinks it */
   letter-spacing: 0.5em;
   transform-origin: 0 0;
   will-change: transform;
-  transform:
-    translate3d(
+  transform: translate3d(
       calc(880px * (1 - var(--p))),
       0px,
       calc(-120px - 180px * var(--p))
     )
-    rotateZ(-90deg)
-    rotateX(calc(-90deg * var(--p)))
-    scale(calc(1.9 - 0.9 * var(--p)))
-    translate(-50%, -50%);
+    rotateZ(-90deg) rotateX(calc(-90deg * var(--p)))
+    scale(calc(1.9 - 0.9 * var(--p))) translate(-50%, -50%);
 }
 
 /* the wordmark IS the page's <h1>; strip the UA heading margin/size so it
@@ -125,32 +144,44 @@ body {
   margin: calc(0.1em + 0.15em * var(--p)) 0 0;
   padding: 0;
   list-style: none;
-  font-family: Dinish;
+  font-family: "Dinish", sans-serif;
   font-size: 0.9em;
   letter-spacing: 0.08em;
   transform: translateZ(1px);
   transform-style: flat;
 }
 
-/* each link is placed from its 0-based index --i: stacked one line apart in the
-   hero (p=0), spread evenly across a row from -10em to +10em in the header (p=1) */
+/* each link is placed from its index --i: stacked one line apart in the hero
+   (p=0), spread across the docked row in the header (p=1). The horizontal offset
+   (--i − 1.5)·5em is centred on --i = 1.5 (the wordmark centre), so --i values
+   symmetric about 1.5 keep the row centred — for 5 links that's -0.5 … 3.5; the
+   5em sets the gap between links. The vertical term adds +0.5 so the hero stack
+   still starts at line 0 (just below the wordmark) instead of riding into it. */
 #wordmark li {
-  --i: 0.8;
+  --i: -0.5;
   position: absolute;
   left: 0;
   top: 0;
-  transform:
-    translate3d(
-      calc(-50% + (-10em + var(--i) * 20em / 3) * var(--p)),
-      calc(var(--i) * 1em * (1 - var(--p))),
+  transform: translate3d(
+      calc(-50% + (var(--i) - 1.5) * 5em * var(--p)),
+      calc((var(--i) + 0.5) * 1em * (1 - var(--p))),
       1px
     )
     scale(calc(0.92 + 0.08 * var(--p)));
 }
 
-#wordmark li:nth-child(2) { --i: 2.2; }
-#wordmark li:nth-child(3) { --i: 3; }
-#wordmark li:nth-child(4) { --i: 4.5; }
+#wordmark li:nth-child(2) {
+  --i: 0.5;
+}
+#wordmark li:nth-child(3) {
+  --i: 1.5;
+}
+#wordmark li:nth-child(4) {
+  --i: 2.5;
+}
+#wordmark li:nth-child(5) {
+  --i: 3.5;
+}
 
 /* ---------------------------------------------------------------------------
    The 3D scene — the <header> is the camera rig (driven by the intro animation)
@@ -168,20 +199,20 @@ header {
      a/b ratio. Hero fills ~82% width (747px-wide scene at scale 1 → /910) with
      a height guard, floored for phones and capped for huge monitors; the dock
      stays at the good 0.6 and only shrinks when the row (≈713px) won't fit. */
-  --fit-hero: clamp(0.3, min(tan(atan2(100vw, 910px)), tan(atan2(100svh, 390px))), 1.5);
+  --fit-hero: clamp(
+    0.3,
+    min(tan(atan2(100vw, 910px)), tan(atan2(100svh, 390px))),
+    1.5
+  );
   --fit-dock: min(0.6, tan(atan2(100vw, 829px)));
   transform-style: preserve-3d;
   will-change: transform, top;
-  transform:
-    perspective(var(--fov))
-    translate(var(--panX), var(--panY))
+  transform: perspective(var(--fov)) translate(var(--panX), var(--panY))
     translateZ(var(--dist))
     /* zoom = lerp(hero, dock, --p); --p is the only animated part, so resizing
        (which changes --fit-*) updates the scale without a reload */
     scale(calc(var(--fit-hero) * (1 - var(--p)) + var(--fit-dock) * var(--p)))
-    rotateX(var(--rotX))
-    rotateY(var(--rotY))
-    rotateZ(var(--rotZ))
+    rotateX(var(--rotX)) rotateY(var(--rotY)) rotateZ(var(--rotZ))
     /* undo the SS× supersample (innermost) — scale3d so depth (z) shrinks too */
     scale3d(var(--ik), var(--ik), var(--ik));
 }
@@ -194,12 +225,7 @@ header {
   width: 100%;
   height: 22svh;
   pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    #000 0,
-    #000 18svh,
-    transparent 22svh
-  );
+  background: linear-gradient(to bottom, #000 0, #000 18svh, transparent 22svh);
 }
 
 /* --row-x/--row-y/--row-z and --angle are set per tent by the tent components;
@@ -208,37 +234,19 @@ header {
   --arc-radius: 1750px;
   position: absolute;
   transform-style: preserve-3d;
-  transform:
-    translate3d(
+  transform: translate3d(
       calc(
         var(--row-x) * (1 - var(--bend)) +
-        (var(--arc-radius) - var(--arc-radius) * cos(var(--angle))) * var(--bend)
+          (var(--arc-radius) - var(--arc-radius) * cos(var(--angle))) *
+          var(--bend)
       ),
       calc(
-        var(--row-y) * (1 - var(--bend)) -
-        var(--arc-radius) * sin(var(--angle)) * var(--bend)
+        var(--row-y) * (1 - var(--bend)) - var(--arc-radius) *
+          sin(var(--angle)) * var(--bend)
       ),
       var(--row-z)
     )
     rotateZ(calc(var(--angle) * var(--bend)));
-}
-
-.hero-only .face,
-.hero-only .cap polygon {
-  animation: hero-only-color linear both;
-  animation-timeline: scroll(root block);
-  animation-range: 0 72svh;
-}
-
-@keyframes hero-only-color {
-  60% {
-    background-color: #000;
-    fill: #000;
-  }
-  to {
-    background-color: #000;
-    fill: #000;
-  }
 }
 
 /* faces, the cap container, and each cap fill their parent from the origin */

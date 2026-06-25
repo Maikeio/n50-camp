@@ -9,6 +9,11 @@ export interface TentPlacement {
   angle: number;
 }
 
-export function tentStyle({ rowX = 0, rowY, rowZ = 0, angle }: TentPlacement): string {
+export function tentStyle({
+  rowX = 0,
+  rowY,
+  rowZ = 0,
+  angle,
+}: TentPlacement): string {
   return `--row-x:${rowX}px;--row-y:${rowY}px;--row-z:${rowZ}px;--angle:${angle}deg`;
 }

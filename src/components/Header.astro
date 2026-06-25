@@ -1,0 +1,28 @@
+---
+// The 3D tent header (camera rig + wordmark). It renders the same scene
+// everywhere; the home page flies the camera in on scroll (hero.css, loaded
+// only there), every other page shows the same scene in its static docked
+// end-state. The wordmark nav positions are tuned for exactly these 5 links —
+// see the `#wordmark li:nth-child` rules in header.css.
+import Tents from "./Tents.astro";
+import "../styles/header.css";
+---
+
+<header>
+  <Tents />
+  <div id="wordmark">
+    <h1>N50CAMP</h1>
+    <nav>
+      <ul>
+        <!-- The wiki is intentionally disabled for now (still empty). The CfP
+             runs over camp@n50.lat rather than a hosted form, so it's a mailto. -->
+        <li><a href="mailto:camp@n50.lat">CfP</a></li>
+        <li><a href="/lageplan">Lageplan</a></li>
+        <li><a href="/merch">Merch</a></li>
+        <li><a href="https://engel.n50.camp">Engeln</a></li>
+        <li><a href="https://tickets.n50.camp">Tickets</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div id="header-backdrop" aria-hidden="true"></div>
