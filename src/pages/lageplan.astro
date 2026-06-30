@@ -1,7 +1,16 @@
 ---
+import { Image } from "astro:assets";
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import lageplan from "../assets/images/lageplan.webp";
+import platz1 from "../assets/images/platz1.jpeg";
+import platz2 from "../assets/images/platz2.jpeg";
+import platz3 from "../assets/images/platz3.jpeg";
+import platz4 from "../assets/images/platz4.jpeg";
+
+const sizes = "(min-width: 700px) 640px, 100vw";
+const widths = [320, 480, 640, 800, 1024, 1280, 1600];
 ---
 
 <!doctype html>
@@ -55,19 +64,25 @@ import Footer from "../components/Footer.astro";
           &#x336;&#x350;&#x34C;&#x31D;&#x31C;&#x35A;H&#x336;&#x357;&#x307;&#x302;&#x349;&#xF6;&#x335;&#x350;&#x305;&#x32A;&#x322;&#x319;l&#x334;&#x301;&#x31B;&#x33F;&#x329;l&#x334;&#x346;&#x34B;&#x34D;&#x318;e&#x336;&#x30C;&#x356;&#x319;
         </li>
       </ul>
-      <img src="/images/lageplan.webp" alt="Lageplan des Eventgeländes" />
+      <Image
+        src={lageplan}
+        format="webp"
+        widths={widths}
+        sizes={sizes}
+        alt="Lageplan des Eventgeländes"
+      />
       <h3>Bilder des Zeltplatzes</h3>
       <p>Der Zeltplatz</p>
-      <img src="/images/platz1.jpeg" alt="Drohnenbild des Platzes" />
+      <Image src={platz1} format="webp" widths={widths} sizes={sizes} alt="Drohnenbild des Platzes" />
       <p>Das Open Air Hackcenter</p>
-      <img src="/images/platz2.jpeg" alt="Drohnenbild des Platzes" />
+      <Image src={platz2} format="webp" widths={widths} sizes={sizes} alt="Drohnenbild des Platzes" />
       <p>Der Dorfplatz - die Jurte steht beim Camp woanders...</p>
-      <img src="/images/platz3.jpeg" alt="Drohnenbild des Platzes" />
+      <Image src={platz3} format="webp" widths={widths} sizes={sizes} alt="Drohnenbild des Platzes" />
       <p>
         Der Altar mit Sitzkreis und Kreuz - potentiell gut, falls man eine
         Auszeit braucht
       </p>
-      <img src="/images/platz4.jpeg" alt="Drohnenbild des Platzes" />
+      <Image src={platz4} format="webp" widths={widths} sizes={sizes} alt="Drohnenbild des Platzes" />
     </main>
     <Footer />
   </body>

@@ -1,7 +1,12 @@
 ---
+import { Image } from "astro:assets";
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import pulliSchwarz from "../assets/images/pullischwarz.webp";
+import pulliWeiss from "../assets/images/pulliweiß.webp";
+import shirtSchwarz from "../assets/images/shirtschwarz.webp";
+import shirtWeiss from "../assets/images/shirtweiß.webp";
 ---
 
 <!doctype html>
@@ -23,11 +28,11 @@ import Footer from "../components/Footer.astro";
         >
       </p>
       <h3>Pullis (53€)</h3>
-      <img src="/images/pullischwarz.webp" alt="Pulli in schwarzem Design" />
-      <img src="/images/pulliweiß.webp" alt="Pulli in weißem Design" />
+      <Image src={pulliSchwarz} format="webp" alt="Pulli in schwarzem Design" />
+      <Image src={pulliWeiss} format="webp" alt="Pulli in weißem Design" />
       <h3>Shirts (24€)</h3>
-      <img src="/images/shirtschwarz.webp" alt="Shirt in schwarzem Design" />
-      <img src="/images/shirtweiß.webp" alt="Shirt in weißem Design" />
+      <Image src={shirtSchwarz} format="webp" alt="Shirt in schwarzem Design" />
+      <Image src={shirtWeiss} format="webp" alt="Shirt in weißem Design" />
     </main>
     <Footer />
   </body>
